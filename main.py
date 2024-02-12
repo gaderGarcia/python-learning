@@ -9,6 +9,9 @@ class Item(BaseModel):
     name:str
     age:int
     id:int
+    # def __init__(self,name,age):
+    #     self.name= name
+    #     self.age=age
 
 items = {
     0:Item(name="Edgar",age=38,id=0),
@@ -34,6 +37,35 @@ def calculator(x:int,y:int)->dict[str,float]:
     #return {"result": round(x/y,2)}
     #this one is based on a format string option
     return {"result": f"{x/y:.2f}"}
+
+Selection = dict[
+    str, str | int | None
+]  # dictionary containing the user's query arguments
+
+@app.get("/items")
+def query_by_parameters(
+    name: str | None = None,
+    age:int | None=None
+)->dict[str,Selection | list[Item]]:
+    #Creating a function inside of the controller function
+    def check_item(item: Item):
+        
+        """ 
+            all function returns true if all items are true
+            in this case we validate name as none to make sure 
+            return true even when there is no  parameter
+        """
+        return all(
+            [
+                name is None or item.name==name,
+                age is None or item.age==age
+            ]
+        )
+    selection=[item for item in items.values() if check_item(item)]
+    return{
+        "query":{"name":name, "age":age},
+        "result":selection
+    }
 
 @app.post("/")
 def addItem(item:Item)->dict[str,Item]:
