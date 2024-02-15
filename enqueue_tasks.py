@@ -7,7 +7,7 @@ import time
 redis_conn = Redis(
   host='redis-10273.c56.east-us.azure.cloud.redislabs.com',
   port=10273,
-  password='JLhFXEBm3flmz0ubo1NXSwtoJazgL31t')
+  password='')
 
 #Create a queue using the default queue name
 # by default the name of the queu is 'default'

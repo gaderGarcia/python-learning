@@ -5,7 +5,7 @@ from redis import Redis
 redis_conn = Redis(
   host='redis-10273.c56.east-us.azure.cloud.redislabs.com',
   port=10273,
-  password='JLhFXEBm3flmz0ubo1NXSwtoJazgL31t')
+  password='')
 
 # Create a worker and connect it to the default queue
 with Connection(redis_conn):
