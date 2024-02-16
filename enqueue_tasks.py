@@ -1,20 +1,20 @@
 from redis import Redis
+from decouple import config
 from rq import Queue, Callback
-from tasks import calculate_square
+from tasks import calculate_square,report_success
 import time
 
 #Tell RQ what Redis connection to use
 redis_conn = Redis(
-  host='redis-10273.c56.east-us.azure.cloud.redislabs.com',
-  port=10273,
-  password='')
+  host=config("REDIS_HOSTNAME"),
+  port=config("REDIS_PORT"),
+  password=config("REDIS_PASSWORD"))
 
 #Create a queue using the default queue name
 # by default the name of the queu is 'default'
 queue = Queue(connection=redis_conn)
 
-def report_success(job, connection, result):
-    print(result)
+
 
 #Enqueue the calculate_square task with argument 5
 job = queue.enqueue(calculate_square,5,on_success=Callback(report_success))
